@@ -40,8 +40,6 @@ class ViewController: UIViewController {
         }
     }
     
-    var chainedMathOperation: Bool = false
-    
     func validateTouchDigitFailed(_ sender: UIButton) -> Bool {
         let digit : String = sender.currentTitle!
         // cannot perform dot operation on a number that is already decimal
@@ -63,7 +61,6 @@ class ViewController: UIViewController {
         } else {
             display.text = digit
             userIsInTheMiddleofTyping = true
-            chainedMathOperation = false
         }
     }
     
