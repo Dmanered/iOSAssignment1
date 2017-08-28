@@ -50,6 +50,12 @@ class ViewController: UIViewController {
         return false
     }
     
+    @IBAction func clear(_ sender: UIButton) {
+        brain.clear()
+        displayValue = brain.result!
+        descriptionDisplayValue = brain.description
+    }
+    
     @IBAction func touchDigit(_ sender: UIButton) {
         if validateTouchDigitFailed(sender) {
             return
@@ -79,13 +85,11 @@ class ViewController: UIViewController {
             displayValue = result
         }
         // update the description
-        if let newDescription = brain.description {
-            descriptionDisplayValue = newDescription
-            if brain.resultIsPending {
-                descriptionDisplayValue = descriptionDisplayValue + " ..."
-            } else if brain.isEqualsOperation || brain.chainedUnaryOperation {
-                descriptionDisplayValue = descriptionDisplayValue + " ="
-            }
+        descriptionDisplayValue = brain.description
+        if brain.resultIsPending {
+            descriptionDisplayValue = descriptionDisplayValue + " ..."
+        } else {
+            descriptionDisplayValue = descriptionDisplayValue + " ="
         }
     }
 }
