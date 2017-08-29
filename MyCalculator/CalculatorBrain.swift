@@ -15,23 +15,6 @@ func ** (num: Double, power: Double) -> Double {
     return pow(num, power)
 }
 
-func clearDisplay(operand: Double?) -> Double {
-    return 0
-}
-
-func backspace(operand: Double?) -> Double {
-    if operand != nil {
-        let displayValue = String(Int(operand!))
-        let secondLastCharacter = displayValue.index(displayValue.endIndex, offsetBy: -1)
-        let newDisplayValue : String = displayValue.substring(to: secondLastCharacter)
-        if !newDisplayValue.isEmpty {
-            return Double(newDisplayValue)!
-        }
-    }
-    return 0
-}
-
-
 struct CalculatorBrain {
     
     struct PendingBinaryOperation {
@@ -62,7 +45,11 @@ struct CalculatorBrain {
     var description: String {
         get {
             if resultIsPending {
-                return pendingBinaryOperation!.descriptionFunction(pendingBinaryOperation!.descriptionOperand, "")
+                var tempSecondOperand = ""
+                if pendingBinaryOperation!.descriptionOperand != descriptionAccumulator {
+                    tempSecondOperand = descriptionAccumulator
+                }
+                return pendingBinaryOperation!.descriptionFunction(pendingBinaryOperation!.descriptionOperand, tempSecondOperand)
             } else {
                 return descriptionAccumulator
             }
