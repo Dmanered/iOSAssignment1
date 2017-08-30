@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    let M : String = "M"
+    
     private var brain : CalculatorBrain = CalculatorBrain()
 
     private var userIsInTheMiddleofTyping : Bool = false
@@ -81,15 +83,62 @@ class ViewController: UIViewController {
         if let mathematicalSymbol = sender.currentTitle {
             brain.performOperation(mathematicalSymbol)
         }
-        if let result = brain.result {
-            displayValue = result
+        // update the displays
+        updateDisplays(result: brain.result, description: brain.description, pending: brain.resultIsPending)
+    }
+    
+    // MR
+    // This function declares the variable 'M'
+    @IBAction func variableGet(_ sender: UIButton) {
+        brain.setOperand(variable: M)
+        let (result, resultIsPending, description) = brain.evaluate()
+        updateDisplays(result: result, description: description, pending: resultIsPending)
+    }
+    
+    // ->M
+    // This function applies displayValue to 'M' and computes the result
+    @IBAction func variableSet(_ sender: UIButton) {
+        let variables = [M : displayValue]
+        let (result, resultIsPending, description) = brain.evaluate(using: variables)
+        updateDisplays(result: result, description: description, pending: resultIsPending)
+    }
+    
+    func updateDisplays(result: Double?, description: String, pending resultIsPending: Bool) {
+        if result != nil {
+            displayValue = result!
         }
         // update the description
-        descriptionDisplayValue = brain.description
-        if brain.resultIsPending {
+        descriptionDisplayValue = description
+        if resultIsPending {
             descriptionDisplayValue = descriptionDisplayValue + " ..."
         } else {
             descriptionDisplayValue = descriptionDisplayValue + " ="
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
