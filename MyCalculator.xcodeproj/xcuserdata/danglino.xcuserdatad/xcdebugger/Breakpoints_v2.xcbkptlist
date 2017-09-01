@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyCalculator/ViewController.swift"
-            timestampString = "525662826.980625"
+            timestampString = "526001061.281239"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
             landmarkName = "currentDisplayContainsDot"
             landmarkType = "24">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyCalculator/CalculatorBrain.swift"
-            timestampString = "525755750.031771"
+            timestampString = "526001061.281239"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "165"
-            endingLineNumber = "165"
+            startingLineNumber = "184"
+            endingLineNumber = "184"
             landmarkName = "Value"
             landmarkType = "13">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyCalculator/CalculatorBrain.swift"
-            timestampString = "525755750.031771"
+            timestampString = "526001061.281239"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "155"
-            endingLineNumber = "155"
+            startingLineNumber = "174"
+            endingLineNumber = "174"
             landmarkName = "performPendingBinaryOperation()"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyCalculator/ViewController.swift"
-            timestampString = "525665074.293061"
+            timestampString = "526001711.366083"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "101"
-            endingLineNumber = "101"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
             landmarkName = "variableSet(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyCalculator/ViewController.swift"
-            timestampString = "525755827.258696"
+            timestampString = "526001711.366083"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "103"
-            endingLineNumber = "103"
+            startingLineNumber = "121"
+            endingLineNumber = "121"
             landmarkName = "variableSet(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -90,12 +90,60 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyCalculator/CalculatorBrain.swift"
-            timestampString = "525756308.327654"
+            timestampString = "526001061.281239"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "213"
-            endingLineNumber = "213"
+            startingLineNumber = "238"
+            endingLineNumber = "238"
             landmarkName = "setOperand(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MyCalculator/CalculatorBrain.swift"
+            timestampString = "526001061.281239"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "200"
+            endingLineNumber = "200"
+            landmarkName = "evaluate(using:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MyCalculator/ViewController.swift"
+            timestampString = "526001174.039258"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "backspace(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MyCalculator/ViewController.swift"
+            timestampString = "526001711.366083"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
+            landmarkName = "updateDisplays(result:description:pending:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

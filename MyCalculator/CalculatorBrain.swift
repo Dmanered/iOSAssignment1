@@ -29,6 +29,8 @@ struct CalculatorBrain {
         }
     }
     
+    private var previousPrecedence = Precedence.Max
+    
     private var currentPrecedence = Precedence.Max
     
     private var pendingBinaryOperation: PendingBinaryOperation?
@@ -37,13 +39,14 @@ struct CalculatorBrain {
     
     private var descriptionAccumulator : String = "0"
     
+    private var previousDescriptionAccumulator : String?
+    
     private var calculatorVariable : [String:Double]?
     
     var currentVariable : String {
-        get {
-            return calculatorVariable!.keys.first!
-        }
+        return calculatorVariable!.keys.first!
     }
+    
     
     var resultIsPending: Bool {
         get {
@@ -89,6 +92,8 @@ struct CalculatorBrain {
     
     private var currentMathExpression : MathOperation?
     
+    private var previousMathExpression : MathOperation?
+    
     private var pendingMathExpression : MathOperation?
     
     private enum OperationType {
@@ -103,11 +108,23 @@ struct CalculatorBrain {
         accumulator = 0
         currentPrecedence = Precedence.Max
         pendingBinaryOperation = nil
+        calculatorVariable = nil
+    }
+    
+    mutating func undoOperation() {
+        currentMathExpression = previousMathExpression
+        descriptionAccumulator = previousDescriptionAccumulator ?? "0"
+        accumulator = currentMathExpression != nil ? compute(currentMathExpression!) : 0
+        currentPrecedence = previousPrecedence
+        pendingBinaryOperation = nil
     }
     
     // Called by Controller when user clicks a mathematical operation
     mutating func performOperation(_ symbol: String) {
         if let operationType = operations[symbol] {
+            previousMathExpression = currentMathExpression
+            previousDescriptionAccumulator = descriptionAccumulator
+            previousPrecedence = currentPrecedence
             switch operationType {
             case .constant(let value):
                 accumulator = value
@@ -122,6 +139,7 @@ struct CalculatorBrain {
             case .binaryOperation(let function, let descriptionFunction, let precedence):
                 if currentPrecedence.rawValue < precedence.rawValue {
                     descriptionAccumulator = "(\(descriptionAccumulator))"
+                    
                 }
                 currentPrecedence = precedence
                 
@@ -152,6 +170,7 @@ struct CalculatorBrain {
             currentMathExpression = MathOperation.binaryOperation(pendingBinaryOperation!.mathExpression, //retrieving first operand
                                                                   currentMathExpression!, // storing 2nd operand
                                                                   pendingBinaryOperation!.binaryFunction) // preserving type of operation it was
+            previousDescriptionAccumulator = descriptionAccumulator
             descriptionAccumulator = pendingBinaryOperation!.descriptionFunction(
                 pendingBinaryOperation!.descriptionOperand, descriptionAccumulator)
             pendingBinaryOperation = nil
@@ -178,9 +197,12 @@ struct CalculatorBrain {
             -> (result: Double?, isPending: Bool, description: String) {
         if let variables = variables {
             calculatorVariable?[currentVariable] = variables[currentVariable]!
-            return (compute(currentMathExpression!), resultIsPending, description)
+            accumulator = compute(currentMathExpression!)
+            currentMathExpression = MathOperation.value(Value.number(accumulator!))
+            return (accumulator, resultIsPending, description)
         }
-        return (compute(currentMathExpression!), resultIsPending, description)
+        accumulator = compute(currentMathExpression!)
+        return (accumulator, resultIsPending, description)
     }
     
     private func compute(_ expression: MathOperation) -> Double {
@@ -203,7 +225,9 @@ struct CalculatorBrain {
     mutating func setOperand(variable named: String) {
         calculatorVariable = [ named : 0 ]
         currentMathExpression = MathOperation.value(Value.variable(calculatorVariable!))
+        previousMathExpression = nil
         descriptionAccumulator = named
+        previousDescriptionAccumulator = nil
     }
     
 
@@ -211,7 +235,10 @@ struct CalculatorBrain {
         accumulator = operand
         currentMathExpression = MathOperation.value(Value.number(operand))
         descriptionAccumulator = String(operand)
+        previousMathExpression = nil
+        previousDescriptionAccumulator = nil
     }
+    
     
     var result : Double? {
         get {

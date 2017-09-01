@@ -16,6 +16,8 @@ class ViewController: UIViewController {
 
     private var userIsInTheMiddleofTyping : Bool = false
     
+    private var previousDigit : Int?
+    
     @IBOutlet weak var display: UILabel!
     var displayValue : Double {
         get {
@@ -56,6 +58,20 @@ class ViewController: UIViewController {
         brain.clear()
         displayValue = brain.result!
         descriptionDisplayValue = brain.description
+        userIsInTheMiddleofTyping = false
+    }
+    
+    @IBAction func backspace(_ sender: UIButton) {
+        if userIsInTheMiddleofTyping {
+            display.text = String(previousDigit!)
+            if displayValue == 0 {
+                userIsInTheMiddleofTyping = false
+            }
+        } else {
+            brain.undoOperation()
+            let (result, resultIsPending, description) = brain.evaluate()
+            updateDisplays(result: result, description: description, pending: resultIsPending)
+        }
     }
     
     @IBAction func touchDigit(_ sender: UIButton) {
@@ -98,6 +114,7 @@ class ViewController: UIViewController {
     // ->M
     // This function applies displayValue to 'M' and computes the result
     @IBAction func variableSet(_ sender: UIButton) {
+        userIsInTheMiddleofTyping = false
         let variables = [M : displayValue]
         let (result, resultIsPending, description) = brain.evaluate(using: variables)
         updateDisplays(result: result, description: description, pending: resultIsPending)
