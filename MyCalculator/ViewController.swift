@@ -128,7 +128,7 @@ class ViewController: UIViewController {
         descriptionDisplayValue = description
         if resultIsPending {
             descriptionDisplayValue = descriptionDisplayValue + " ..."
-        } else {
+        } else if displayValue != 0 {
             descriptionDisplayValue = descriptionDisplayValue + " ="
         }
     }
