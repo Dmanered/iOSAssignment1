@@ -8,22 +8,32 @@
 
 /* Begin PBXBuildFile section */
 		A7754FB91F4D0FE8000E26AE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7754FB81F4D0FE8000E26AE /* AppDelegate.swift */; };
-		A7754FBB1F4D0FE8000E26AE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7754FBA1F4D0FE8000E26AE /* ViewController.swift */; };
+		A7754FBB1F4D0FE8000E26AE /* CalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7754FBA1F4D0FE8000E26AE /* CalculatorViewController.swift */; };
 		A7754FBE1F4D0FE8000E26AE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7754FBC1F4D0FE8000E26AE /* Main.storyboard */; };
 		A7754FC01F4D0FE8000E26AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7754FBF1F4D0FE8000E26AE /* Assets.xcassets */; };
 		A7754FC31F4D0FE8000E26AE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7754FC11F4D0FE8000E26AE /* LaunchScreen.storyboard */; };
 		A7754FCC1F4D1C78000E26AE /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7754FCB1F4D1C78000E26AE /* CalculatorBrain.swift */; };
+		A7B9B8A91F62398B00B17375 /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B9B8A81F62398B00B17375 /* GraphViewController.swift */; };
+		A7E6C8D61F607ACD00C3D6EC /* AxesDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E6C8D51F607ACD00C3D6EC /* AxesDrawer.swift */; };
+		A7EAED961F60CC3F004A6BDE /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EAED951F60CC3F004A6BDE /* GraphView.swift */; };
+		A7EAED981F60CE2F004A6BDE /* VCLLoggingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EAED971F60CE2F004A6BDE /* VCLLoggingViewController.swift */; };
+		A7EAED9A1F60D24B004A6BDE /* GraphModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EAED991F60D24B004A6BDE /* GraphModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A7754FB51F4D0FE8000E26AE /* MyCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7754FB81F4D0FE8000E26AE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A7754FBA1F4D0FE8000E26AE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A7754FBA1F4D0FE8000E26AE /* CalculatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewController.swift; sourceTree = "<group>"; };
 		A7754FBD1F4D0FE8000E26AE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A7754FBF1F4D0FE8000E26AE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A7754FC21F4D0FE8000E26AE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A7754FC41F4D0FE8000E26AE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7754FCB1F4D1C78000E26AE /* CalculatorBrain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorBrain.swift; sourceTree = "<group>"; };
+		A7B9B8A81F62398B00B17375 /* GraphViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
+		A7E6C8D51F607ACD00C3D6EC /* AxesDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AxesDrawer.swift; sourceTree = "<group>"; };
+		A7EAED951F60CC3F004A6BDE /* GraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
+		A7EAED971F60CE2F004A6BDE /* VCLLoggingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VCLLoggingViewController.swift; sourceTree = "<group>"; };
+		A7EAED991F60D24B004A6BDE /* GraphModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,10 +66,15 @@
 		A7754FB71F4D0FE8000E26AE /* MyCalculator */ = {
 			isa = PBXGroup;
 			children = (
+				A7EAED971F60CE2F004A6BDE /* VCLLoggingViewController.swift */,
+				A7E6C8D51F607ACD00C3D6EC /* AxesDrawer.swift */,
 				A7754FBC1F4D0FE8000E26AE /* Main.storyboard */,
-				A7754FBA1F4D0FE8000E26AE /* ViewController.swift */,
+				A7B9B8A81F62398B00B17375 /* GraphViewController.swift */,
+				A7EAED951F60CC3F004A6BDE /* GraphView.swift */,
+				A7754FBA1F4D0FE8000E26AE /* CalculatorViewController.swift */,
 				A7754FCA1F4D1062000E26AE /* Supporting Files */,
 				A7754FCB1F4D1C78000E26AE /* CalculatorBrain.swift */,
+				A7EAED991F60D24B004A6BDE /* GraphModel.swift */,
 			);
 			path = MyCalculator;
 			sourceTree = "<group>";
@@ -148,8 +163,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7EAED981F60CE2F004A6BDE /* VCLLoggingViewController.swift in Sources */,
+				A7EAED961F60CC3F004A6BDE /* GraphView.swift in Sources */,
+				A7EAED9A1F60D24B004A6BDE /* GraphModel.swift in Sources */,
 				A7754FCC1F4D1C78000E26AE /* CalculatorBrain.swift in Sources */,
-				A7754FBB1F4D0FE8000E26AE /* ViewController.swift in Sources */,
+				A7E6C8D61F607ACD00C3D6EC /* AxesDrawer.swift in Sources */,
+				A7B9B8A91F62398B00B17375 /* GraphViewController.swift in Sources */,
+				A7754FBB1F4D0FE8000E26AE /* CalculatorViewController.swift in Sources */,
 				A7754FB91F4D0FE8000E26AE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -316,6 +336,7 @@
 				A7754FC91F4D0FE8000E26AE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

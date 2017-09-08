@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class CalculatorViewController: VCLLoggingViewController {
     
     let M : String = "M"
     
