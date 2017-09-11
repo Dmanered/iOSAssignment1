@@ -7,3 +7,21 @@
 //
 
 import Foundation
+
+class GraphModel {
+    var functionToGraph : ((Double) -> Double)?
+    
+    var initialY : Double = 0
+    
+    init() {
+        functionToGraph = nil
+        initialY = 0
+    }
+    
+    init(functionToGraph: @escaping (Double) -> Double, initialY : Double) {
+        self.functionToGraph = functionToGraph
+        self.initialY = initialY
+    }
+}
+
+

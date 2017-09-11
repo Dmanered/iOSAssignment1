@@ -33,8 +33,6 @@ struct CalculatorBrain {
     
     private var pendingBinaryOperation: PendingBinaryOperation?
     
-    private var accumulator : Double?
-    
     private var descriptionAccumulator : String = "0"
     
     private var calculatorVariable : [String:Double]?
@@ -68,10 +66,6 @@ struct CalculatorBrain {
         }
     }
     
-    private enum Precedence: Int {
-        case Min = 0, Max
-    }
-    
     private var operations =
     [
         "π"     : OperationType.constant(Double.pi),
@@ -90,25 +84,18 @@ struct CalculatorBrain {
         "="     : OperationType.equals
     ]
     
-    private enum OperationType {
-        case constant(Double)
-        case unaryOperation((Double) -> Double, (String) -> String)
-        case binaryOperation((Double, Double) -> Double, (String, String) -> String, Precedence)
-        case equals
-    }
-    
     mutating func clear() {
         descriptionAccumulator = "0"
-        accumulator = 0
         currentPrecedence = Precedence.Max
         pendingBinaryOperation = nil
         calculatorVariable = nil
+        currentMathExpression = nil
+        pendingMathExpression = nil
     }
     
     mutating func undoOperation() {
         currentMathExpression = currentMathExpression?.getPreviousOperation()
         descriptionAccumulator = currentMathExpression != nil ? currentMathExpression!.getDescription() : "0"
-        accumulator = currentMathExpression != nil ? compute(currentMathExpression!) : 0
         currentPrecedence = currentMathExpression != nil ? (currentMathExpression!.getPrecedence() ?? Precedence.Max) : Precedence.Max
         pendingBinaryOperation = nil
     }
@@ -118,17 +105,15 @@ struct CalculatorBrain {
         if let operationType = operations[symbol] {
             switch operationType {
             case .constant(let value):
-                accumulator = value
                 descriptionAccumulator = symbol
                 currentMathExpression = MathOperation.value(Value.number(value), descriptionAccumulator)
             case .unaryOperation(let function, let descriptionFunction):
-                if accumulator != nil && currentMathExpression != nil {
+                if currentMathExpression != nil {
                     descriptionAccumulator = descriptionFunction(descriptionAccumulator)
-                    accumulator = function(accumulator!)
                     currentMathExpression = MathOperation.unaryOperation(currentMathExpression!, function, descriptionAccumulator)
                 }
             case .binaryOperation(let function, let descriptionFunction, let precedence):
-                if accumulator != nil && currentMathExpression != nil {
+                if currentMathExpression != nil {
                     if currentPrecedence.rawValue < precedence.rawValue {
                         descriptionAccumulator = "(\(descriptionAccumulator))"
                         
@@ -138,15 +123,14 @@ struct CalculatorBrain {
                     // preserve the operand, which may be nested operations
                     pendingMathExpression = currentMathExpression
                     
+                    let firstOperand = result!
+                    
                     pendingBinaryOperation = PendingBinaryOperation(
                         binaryFunction: function,
-                        firstOperand: accumulator!,
+                        firstOperand: firstOperand,
                         mathExpression: pendingMathExpression!,
                         descriptionOperand: descriptionAccumulator,
                         descriptionFunction: descriptionFunction)
-                    
-                    // we now always want this to have a value
-                    accumulator = 0
                 }
             case .equals:
                 performPendingBinaryOperation()
@@ -157,8 +141,6 @@ struct CalculatorBrain {
     // accumulator currently stores contents of second operand
     mutating func performPendingBinaryOperation() {
         if pendingBinaryOperation != nil {
-            // perform the binary operation
-            accumulator = pendingBinaryOperation!.perform(with: accumulator!)
             // obtain new description
             descriptionAccumulator = pendingBinaryOperation!.descriptionFunction(
                 pendingBinaryOperation!.descriptionOperand, descriptionAccumulator)
@@ -174,71 +156,23 @@ struct CalculatorBrain {
 
     }
     
-    private enum Value {
-        case number(Double)
-        case variable([String:Double])
-    }
-    
-    private indirect enum MathOperation {
-        // stores value of the variable or constant
-        case value(Value, String)
-        // stores binary operations
-        case binaryOperation(MathOperation, MathOperation, (Double, Double) -> Double, String, Precedence)
-        // stores unary operations
-        case unaryOperation(MathOperation, (Double) -> Double, String)
-        
-        func getPreviousOperation() -> MathOperation? {
-            switch(self) {
-            // there is no previous operation
-            case .value:
-                return nil
-            // previous operation would be the operand to the unary operation
-            case .unaryOperation(let mathExpression, _, _):
-                return mathExpression
-            // previous operation would be the left operand to the binary operation
-            case .binaryOperation(let leftExpression, _, _, _, _):
-                return leftExpression
-            }
-        }
-        
-        func getDescription() -> String {
-            switch(self) {
-            case .value(_, let description):
-                return description
-            case .unaryOperation(_, _, let description):
-                return description
-            case .binaryOperation(_, _, _, let description, _):
-                return description
-            }
-        }
-        
-        func getPrecedence() -> Precedence? {
-            switch(self) {
-            case .value:
-                return nil
-            case .unaryOperation:
-                return nil
-            case .binaryOperation(_, _, _, _, let precedence):
-                return precedence
-            }
-        }
-    }
-    
-    mutating func evaluate(using variables: Dictionary<String, Double>? = nil)
-            -> (result: Double?, isPending: Bool, description: String) {
+    func evaluate(using variables: Dictionary<String, Double>? = nil)
+            -> (result: Double, isPending: Bool, description: String) {
+        var result : Double = 0
         if let variables = variables {
-            calculatorVariable?[currentVariable] = variables[currentVariable]!
-            accumulator = compute(currentMathExpression!)
-            // currentMathExpression = MathOperation.value(Value.number(accumulator!), description)
-            return (accumulator, resultIsPending, description)
+            if let mathExpression = currentMathExpression {
+                result = compute(mathExpression, variableValue: variables[currentVariable]!)
+            }
+            return (result, resultIsPending, description)
         }
         if let mathExpression = currentMathExpression {
-            accumulator = compute(mathExpression)
+            let currentValue = calculatorVariable != nil ? calculatorVariable![currentVariable]! : 0
+            result = compute(mathExpression, variableValue: currentValue)
         }
-        return (accumulator, resultIsPending, description)
+        return (result, resultIsPending, description)
     }
     
-    private func compute(_ expression: MathOperation) -> Double {
+    private func compute(_ expression: MathOperation, variableValue : Double) -> Double {
         switch(expression) {
         // obtained value of the variable or constant
         case .value(let innerValue, _):
@@ -246,12 +180,12 @@ struct CalculatorBrain {
             case .number(let doubleValue):
                 return doubleValue
             case .variable:
-                return (calculatorVariable?[currentVariable])!
+                return variableValue
             }
         case .unaryOperation(let mathExpression, let unaryFunction, _):
-            return unaryFunction(compute(mathExpression))
+            return unaryFunction(compute(mathExpression, variableValue: variableValue))
         case .binaryOperation(let leftExpression, let rightExpression, let binaryFunction, _, _):
-            return binaryFunction(compute(leftExpression), compute(rightExpression))
+            return binaryFunction(compute(leftExpression, variableValue: variableValue), compute(rightExpression, variableValue: variableValue))
         }
     }
     
@@ -261,18 +195,18 @@ struct CalculatorBrain {
         currentMathExpression = MathOperation.value(Value.variable(calculatorVariable!), descriptionAccumulator)
     }
     
+    mutating func setVariable(with variable: Double) {
+        calculatorVariable?[currentVariable] = variable
+    }
 
     mutating func setOperand(_ operand: Double) {
-        accumulator = operand
         descriptionAccumulator = String(operand)
         currentMathExpression = MathOperation.value(Value.number(operand), descriptionAccumulator)
     }
     
-    
     var result : Double? {
-        get {
-            return accumulator
-        }
+        let (result, _, _) = evaluate()
+        return result
     }
 }
 

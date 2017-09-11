@@ -9,21 +9,42 @@
 import UIKit
 
 class GraphViewController: UIViewController {
+    
+    public var functionToGraph : ((Double) -> Double)? {
+        get {
+            return model.functionToGraph
+        }
+        set {
+            model.functionToGraph = newValue
+        }
+    }
 
-    @IBOutlet weak var graphView: GraphView!
+    public var initialY : Double {
+        get {
+            return model.initialY
+        }
+        set {
+            model.initialY = newValue
+        }
+    }
+    
+    private var model = GraphModel()
+    
+    @IBOutlet weak var graphView: GraphView! {
+        didSet {
+            let handler = #selector(GraphView.changeScale(byReactingTo:))
+            let pinchRecognizer = UIPinchGestureRecognizer(target: graphView, action: handler)
+            graphView.addGestureRecognizer(pinchRecognizer)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        graphView.functionToGraph = model.functionToGraph
+        graphView.initialY = model.initialY;
+        graphView.setNeedsDisplay()
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        print("Changed orientation")
-        graphView.draw(graphView.bounds)
-    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

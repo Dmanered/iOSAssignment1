@@ -10,18 +10,47 @@ import UIKit
 
 class GraphView: UIView {
     
+    let MIN_SCALE : CGFloat = 5.0
+    
     // how many pixels per unit double
-    var scale : CGFloat = 25
+    @IBInspectable
+    var scale : CGFloat = 25 {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
     
     // how many function calls to move 1 unit (AKA how many points per unit we will draw)
+    @IBInspectable
     var resolution : Double = 100
+    
+    var functionToGraph : ((Double) -> Double)?
+    
+    var initialY : Double = 0
+    
+    func getCenter() -> CGPoint {
+        return CGPoint(x: bounds.midX, y: bounds.midY)
+    }
     
     override func draw(_ rect: CGRect) {
         let center : CGPoint = CGPoint(x: bounds.midX, y: bounds.midY)
         let axesDrawer : AxesDrawer = AxesDrawer()
         axesDrawer.drawAxes(in: rect, origin: center, pointsPerUnit: scale)
-        
-        drawContinuousFunction(from: center, using: sin)
+        let origin = CGPoint(x: center.x, y: center.y - CGFloat(initialY)*scale)
+        if functionToGraph != nil {
+            drawContinuousFunction(from: origin, using: functionToGraph!)
+        }
+    }
+    
+    func changeScale(byReactingTo pinchRecognizer: UIPinchGestureRecognizer) {
+        switch(pinchRecognizer.state) {
+        case .changed, .ended:
+            let newScale = pinchRecognizer.scale * scale
+            scale = max(MIN_SCALE, newScale)
+            pinchRecognizer.scale = 1
+        default:
+            break
+        }
     }
     
     func drawContinuousFunction(from origin: CGPoint, using function: (Double) -> Double) {
@@ -47,7 +76,9 @@ class GraphView: UIView {
             {
                 // get new point and draw it
                 currentOperand = currentOperand + operandStep
-                currentPoint = CGPoint(x: currentPoint.x + graphStep, y: origin.y - CGFloat(function(currentOperand)) * scale)
+                // center.y is the y = 0 line. We subtract to go up on the y axis
+                let newYCoordinate = center.y - (CGFloat(function(currentOperand)) * scale)
+                currentPoint = CGPoint(x: currentPoint.x + graphStep, y: newYCoordinate)
                 righDotPath.addLine(to: currentPoint)
 
             }
@@ -72,7 +103,9 @@ class GraphView: UIView {
             {
                 // get new point and draw it
                 currentOperand = currentOperand - operandStep // moving left
-                currentPoint = CGPoint(x: currentPoint.x - graphStep, y: origin.y - CGFloat(function(currentOperand)) * scale)
+                // center.y is the y = 0 line. We subtract to go up on the y axis
+                let newYCoordinate = center.y - (CGFloat(function(currentOperand)) * scale)
+                currentPoint = CGPoint(x: currentPoint.x - graphStep, y: newYCoordinate)
                 leftDotPath.addLine(to: currentPoint)
             }
             // 1 scale = 1 Double so this needs to be a whole number at the end

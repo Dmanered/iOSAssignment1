@@ -10,6 +10,20 @@ import UIKit
 
 class CalculatorViewController: VCLLoggingViewController {
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let identifer = segue.identifier {
+            switch (identifer) {
+            case "Show Graph":
+                if let vc = segue.destination as? GraphViewController {
+                    vc.functionToGraph = computeResult
+                    vc.initialY = computeResult(for: 0)
+                }
+            default:
+                break
+            }
+        }
+    }
+    
     let M : String = "M"
     
     private var brain : CalculatorBrain = CalculatorBrain()
@@ -103,6 +117,18 @@ class CalculatorViewController: VCLLoggingViewController {
         updateDisplays(result: brain.result, description: brain.description, pending: brain.resultIsPending)
     }
     
+    func computeResult(for value: Double?) -> Double {
+        if let value = value {
+            let variable = [M : value]
+            let (result, _, _) = brain.evaluate(using: variable)
+            return result
+            
+        } else {
+            let (result, _, _) = brain.evaluate()
+            return result
+        }
+    }
+    
     // MR
     // This function declares the variable 'M'
     @IBAction func variableGet(_ sender: UIButton) {
@@ -116,6 +142,7 @@ class CalculatorViewController: VCLLoggingViewController {
     @IBAction func variableSet(_ sender: UIButton) {
         userIsInTheMiddleofTyping = false
         let variables = [M : displayValue]
+        brain.setVariable(with: displayValue)
         let (result, resultIsPending, description) = brain.evaluate(using: variables)
         updateDisplays(result: result, description: description, pending: resultIsPending)
     }
